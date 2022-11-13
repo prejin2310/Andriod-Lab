@@ -1,71 +1,83 @@
-package com.example.validation;
-import androidx.appcompat.app.AlertDialog;
+package com.example.formvalidation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    EditText pass, mail, phno;
-    Button btn;
-
+    EditText fname,email,phone,adds;
+    Button Validate;
+    RadioGroup radioGroup;
+    RadioButton radioButton;
+    CheckBox mala,eng,hin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fname=findViewById(R.id.fname);
+        email=findViewById(R.id.email);
+        phone=findViewById(R.id.phone);
+        adds=findViewById(R.id.adds);
+        radioGroup=findViewById(R.id.radioGroup);
+        Validate=findViewById(R.id.Validate);
+        mala=findViewById(R.id.mala);
+        eng=findViewById(R.id.eng);
+        hin=findViewById(R.id.hin);
 
-        mail = findViewById(R.id.et_mail);
-        pass = findViewById(R.id.et_pass);
-        phno = findViewById(R.id.et_phno);
-        btn = findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
+        //get text form edittext
+
+
+        Validate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = mail.getText().toString();
-                String passw = pass.getText().toString();
-                String num = phno.getText().toString();
 
-                validate(email, passw, num);
+                String name=fname.getText().toString();
+                String mail= email.getText().toString();
+                String num=phone.getText().toString();
+                String add=adds.getText().toString();
+                int radioId=radioGroup.getCheckedRadioButtonId();
+                radioButton=findViewById(radioId);
+
+                //validation
+                if(name.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Enter your name", Toast.LENGTH_SHORT).show();
+                }
+                else if(mail.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Enter Mail id", Toast.LENGTH_SHORT).show();
+                }
+                else if(num.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Enter Phone Number", Toast.LENGTH_SHORT).show();
+                }
+                else if(num.length()<10){
+                    Toast.makeText(MainActivity.this, "Enter a Valid number", Toast.LENGTH_SHORT).show();
+                }
+
+                //for validate radio button
+
+                else if(radioId == -1){
+                    Toast.makeText(MainActivity.this, "Please select gender", Toast.LENGTH_SHORT).show();
+                }
+
+                //validate checkbox
+
+                else if(!mala.isChecked() && !eng.isChecked() && !hin.isChecked()){
+                    Toast.makeText(MainActivity.this, "Please select Languages", Toast.LENGTH_SHORT).show();
+
+                }
+                else if(add.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Enter your Address", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
 
     }
-
-    private  void validate(String email, String passw, String num) {
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-
-        if (!email.matches(emailPattern)) {
-                mail.setError("Invalid Mail Id");
-                Toast.makeText(getApplicationContext(),"Invalid Mail Id",Toast.LENGTH_SHORT).show();
-            }
-        else if(email.length()==0){
-            mail.setError("This field is required");
-            Toast.makeText(getApplicationContext(),"Email is required",Toast.LENGTH_SHORT).show();
-        }
-
-
-          else  if (pass.length() == 0) {
-                pass.setError("Password is required");
-                Toast.makeText(getApplicationContext(),"Password is required",Toast.LENGTH_SHORT).show();
-
-            }
-            else if (pass.length() < 8) {
-                pass.setError("Password must be minimum 8 characters");
-                Toast.makeText(getApplicationContext(),"Password must be minimum 8 characters",Toast.LENGTH_SHORT).show();
-
-            }
-
-            else if (phno.length() == 0) {
-                phno.setError("Phone Number is required");
-                Toast.makeText(getApplicationContext(),"Phone Number is required",Toast.LENGTH_SHORT).show();
-
-            }
-
-
-        }
 }
